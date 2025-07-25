@@ -57,7 +57,7 @@ namespace rubricaClinica.Services
                     Dat_appu = interv.Data_appu?.ToString("yyyy-MM-dd"),
                     Ora_appu = interv.Ora_appu?.ToString("HH-mm"),
                     Note = interv.Note,
-                    Paz = _pazienteService.CercaPerId((int)interv.PazienteRIF)
+                    //Paz = _pazienteService.CercaPerId((int)interv.PazienteRIF)
                 };
             }
 
@@ -101,18 +101,28 @@ namespace rubricaClinica.Services
 
         public bool Inserisci(AppuntamentoDTO entity)
         {
+            Console.WriteLine($"Ricevuto pazCod: {entity.PazCod}");
             if (entity.Dat_appu is null || entity.PazCod is null)
                 return false;
 
             int? cliId = _pazienteService.RestituisciIdPaziente(entity.PazCod);
+            Console.WriteLine($"ID restituito: {cliId}");
             if (!cliId.HasValue)
+            {
+                Console.WriteLine($"Errore: paziente con codice '{entity.PazCod}' non trovato");
                 return false;
+            }
+
+            //if (entity.PazCod is not null)
+            //{
+            //    entity.Paz = _pazienteService.CercaPaziente(entity);
+            //}
 
             Appuntamento cli = new Appuntamento()
             {
                 Codice = string.IsNullOrWhiteSpace(entity.Cod) ? Guid.NewGuid().ToString() : entity.Cod,
                 Note = entity.Note,
-                PazienteRIF = (int)cliId
+                PazienteRIF = (int)cliId,
             };
 
             if (!string.IsNullOrWhiteSpace(entity.Dat_appu) &&
@@ -126,6 +136,7 @@ namespace rubricaClinica.Services
             {
                 cli.Ora_appu = oraAppu;
             }
+                
 
             return _repos.Create(cli);
         }
@@ -147,7 +158,7 @@ namespace rubricaClinica.Services
                     Dat_appu = interv.Data_appu?.ToString("yyyy-MM-dd"),
                     Ora_appu = interv.Ora_appu?.ToString("HH:mm"),
                     Note = interv.Note,
-                    Paz = _pazienteService.CercaPerId((int)interv.PazienteRIF)
+                    //Paz = _pazienteService.CercaPerId((int)interv.PazienteRIF)
                     //Cli = _cliService.CercaPerId(interv.ClienteRIF)
                 };
 
@@ -158,5 +169,6 @@ namespace rubricaClinica.Services
 
             throw new NotImplementedException();
         }
+
     }
 }

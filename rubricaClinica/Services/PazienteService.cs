@@ -60,7 +60,6 @@ namespace rubricaClinica.Services
                     Dat = paz.Data_di_nascita?.ToString("yyyy-MM-dd"),
                     Tel = paz.Telefono,
                     Ema = paz.Email
-
                     //appuntamento
                 };
             }
@@ -81,9 +80,9 @@ namespace rubricaClinica.Services
                     Nom = paz.Nome,
                     Cog = paz.Cognome,
                     Ind = paz.Indirizzo,
-                    //Dat = (DateOnly)paz.Data_di_nascita,
+                    //Dat = paz.Data_di_nascita,
                     Tel = paz.Telefono,
-                    Ema = paz.Email
+                    Ema = paz.Email,
                 };
             }
 
@@ -157,10 +156,25 @@ namespace rubricaClinica.Services
             int? risultato = null;
 
             Paziente? paz = _repo.CercaPerCodice(codice);
+            Console.WriteLine($"Paziente trovato: {paz?.PazienteID}");
             if (paz is not null)
                 risultato = paz.PazienteID;
 
             return risultato;
         }
+
+        //public Paziente? CercaPaziente(AppuntamentoDTO appu)
+        //{
+        //    Paziente? risultato = null;
+
+        //    if (appu.PazCod is not null)
+        //    {
+        //        appu.Paz = CercaPerCodice(appu.PazCod);
+        //    }
+                
+
+        //    return risultato;
+        //}
+
     }
 }
