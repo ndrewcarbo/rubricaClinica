@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using rubricaClinica.Context;
 using rubricaClinica.Repos;
 using rubricaClinica.Services;
@@ -19,6 +20,9 @@ namespace rubricaClinica
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<AdminRepos>();
+            builder.Services.AddScoped<AdminService>();
+
             builder.Services.AddDbContext<RubricaClinicaContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -27,6 +31,8 @@ namespace rubricaClinica
 
             builder.Services.AddScoped<AppuntamentoRepositories>();
             builder.Services.AddScoped<AppuntamentoService>();
+
+            
 
 
             var app = builder.Build();
